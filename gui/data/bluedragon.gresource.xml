@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/bluedragon/settings">
+    <file>style.css</file>
+    <file>ui/window.ui</file>
+    <file>ui/page-general.ui</file>
+    <file>ui/page-dpi.ui</file>
+    <file>ui/page-light.ui</file>
+    <file>ui/page-info.ui</file>
+    <file>ui/action-row.ui</file>
+    <file>ui/action-popover.ui</file>
+    <file>ui/dpi-column.ui</file>
+  </gresource>
+</gresources>

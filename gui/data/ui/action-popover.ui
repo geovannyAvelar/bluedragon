@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="BdActionPopover" parent="GtkPopover">
+    <property name="child">
+      <object class="GtkScrolledWindow">
+        <property name="hscrollbar-policy">never</property>
+        <property name="propagate-natural-height">true</property>
+        <property name="propagate-natural-width">true</property>
+        <property name="max-content-height">360</property>
+        <property name="width-request">260</property>
+        <property name="child">
+          <object class="GtkBox">
+            <property name="orientation">vertical</property>
+            <property name="spacing">2</property>
+            <!-- preset buttons are added in code from the action table -->
+            <child><object class="GtkBox" id="presets"><property name="orientation">vertical</property><property name="spacing">2</property></object></child>
+            <child>
+              <object class="GtkEntry" id="custom">
+                <property name="placeholder-text">key:ctrl+c   key:f5   raw:8d000000</property>
+                <property name="margin-top">6</property>
+                <signal name="activate" handler="on_custom" swapped="yes"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton">
+                <property name="label">Use custom action</property>
+                <signal name="clicked" handler="on_custom" swapped="yes"/>
+              </object>
+            </child>
+          </object>
+        </property>
+      </object>
+    </property>
+  </template>
+</interface>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="BdPageInfo" parent="GtkBox">
+    <property name="orientation">vertical</property>
+    <property name="spacing">12</property>
+    <style><class name="page"/></style>
+    <child><object class="GtkLabel" id="device"><property name="xalign">0</property></object></child>
+    <child><object class="GtkLabel" id="active"><property name="label">Active profile: ?</property><property name="xalign">0</property></object></child>
+    <child>
+      <object class="GtkButton">
+        <property name="label">MEASURE REPORT RATE</property>
+        <property name="halign">start</property>
+        <style><class name="action"/></style>
+        <signal name="clicked" handler="on_measure" swapped="yes"/>
+      </object>
+    </child>
+    <child><object class="GtkLabel" id="rate"><property name="xalign">0</property></object></child>
+  </template>
+</interface>

@@ -7,7 +7,7 @@ Reverse engineered from the vendor's Windows configuration tool; no vendor code 
 |---|---|---|
 | libbluedragon | `lib/` | C library: DPI, polling rate, buttons, LED, raw memory access over hidraw |
 | bluedragon | `cli/` | Command line tool built on libbluedragon |
-| bluedragon-gui | `gui/` | GTK4 front end (built when GTK 4.10+ development files are found) |
+| bluedragon-gui | `gui/` | GTK4 front end: composite templates (`data/ui/*.ui`) in a GResource, one class per widget (built when GTK 4.10+ development files are found) |
 | tests | `tests/` | Unit tests against a simulated device, no hardware needed |
 
 ## Build

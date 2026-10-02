@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <object class="GtkAdjustment" id="adjustment">
+    <property name="lower">100</property>
+    <property name="upper">5000</property>
+    <property name="step-increment">100</property>
+    <property name="page-increment">500</property>
+    <property name="value">100</property>
+    <signal name="value-changed" handler="on_value_changed" swapped="yes"/>
+  </object>
+  <template class="BdDpiColumn" parent="GtkBox">
+    <property name="orientation">vertical</property>
+    <property name="spacing">6</property>
+    <child><object class="GtkLabel" id="head"><style><class name="dpihead"/></style></object></child>
+    <child>
+      <object class="GtkCheckButton">
+        <property name="label">LINK XY</property>
+        <property name="active">true</property>
+        <property name="sensitive">false</property>
+        <property name="tooltip-text">Separate X/Y DPI is not supported yet</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkBox">
+        <property name="spacing">14</property>
+        <property name="halign">center</property>
+        <property name="vexpand">true</property>
+        <!-- X and Y share one adjustment, so Y always follows X -->
+        <child><object class="GtkScale"><property name="orientation">vertical</property><property name="adjustment">adjustment</property><property name="inverted">true</property><property name="draw-value">false</property><property name="height-request">250</property></object></child>
+        <child><object class="GtkScale"><property name="orientation">vertical</property><property name="adjustment">adjustment</property><property name="inverted">true</property><property name="draw-value">false</property><property name="height-request">250</property><property name="sensitive">false</property></object></child>
+      </object>
+    </child>
+    <child><object class="GtkLabel" id="readout"/></child>
+  </template>
+</interface>

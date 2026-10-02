@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="BdPageDpi" parent="GtkBox">
+    <property name="orientation">vertical</property>
+    <property name="spacing">8</property>
+    <style><class name="page"/></style>
+    <child><object class="GtkLabel" id="stage"><property name="label">Current Stage : ?</property><property name="xalign">0</property><style><class name="section"/></style></object></child>
+    <child>
+      <object class="GtkBox" id="columns">
+        <property name="spacing">12</property>
+        <property name="homogeneous">true</property>
+        <property name="vexpand">true</property>
+        <child><object class="BdDpiColumn"><property name="title">DPI1</property></object></child>
+        <child><object class="BdDpiColumn"><property name="title">DPI2</property></object></child>
+        <child><object class="BdDpiColumn"><property name="title">DPI3</property></object></child>
+        <child><object class="BdDpiColumn"><property name="title">DPI4</property></object></child>
+        <child><object class="BdDpiColumn"><property name="title">DPI5</property></object></child>
+      </object>
+    </child>
+  </template>
+</interface>

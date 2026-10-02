@@ -30,7 +30,12 @@ Not yet decoded: names of device functions, macros, fire key, LED effect names, 
 ## Layout
   lib/include/bluedragon.h, lib/src/bluedragon.c   libbluedragon (shared by default, -DBUILD_SHARED_LIBS=OFF for static)
   cli/main.c                           bluedragon (CLI), links bluedragon::bluedragon
-  gui/main.c                           bluedragon-gui, GTK4 front end (built only if libgtk-4-dev >= 4.10 is found)
+  gui/                                 bluedragon-gui, GTK4 front end (built only if libgtk-4-dev >= 4.10 is found)
+    data/ui/*.ui, data/style.css       widget templates + stylesheet, compiled into a GResource
+    src/bd-window.c                    main window; owns the device, drives pages through the BdPage interface
+    src/bd-page-{general,dpi,light,info}.c   one class per tab, each loads from / applies to the device
+    src/bd-{action-row,action-popover,dpi-column,mouse-view}.c   reusable widgets
+    src/bd-actions.c, bd-snapshot.c    action label table; developer snapshot mode
   tests/test_bluedragon.c                    unit tests against a simulated device
 
 ## Build

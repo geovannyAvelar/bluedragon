@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="BdActionRow" parent="GtkBox">
+    <property name="spacing">8</property>
+    <child><object class="GtkLabel" id="number"><style><class name="num"/></style></object></child>
+    <child>
+      <object class="GtkMenuButton" id="button">
+        <property name="hexpand">true</property>
+        <property name="width-request">220</property>
+        <style><class name="action"/></style>
+        <property name="popover">
+          <object class="BdActionPopover">
+            <signal name="picked" handler="on_picked" swapped="yes"/>
+          </object>
+        </property>
+      </object>
+    </child>
+  </template>
+</interface>

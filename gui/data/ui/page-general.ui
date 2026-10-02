@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="BdPageGeneral" parent="GtkBox">
+    <property name="orientation">horizontal</property>
+    <property name="spacing">24</property>
+    <style><class name="page"/></style>
+
+    <child><object class="BdMouseView"><property name="width-request">230</property><property name="height-request">380</property></object></child>
+
+    <child>
+      <object class="GtkBox" id="rows">
+        <property name="orientation">vertical</property>
+        <property name="spacing">8</property>
+        <!-- slot = device button slot (hid.exe edits slots 0-7, 10, 11) -->
+        <child><object class="BdActionRow"><property name="caption">1</property><property name="slot">0</property></object></child>
+        <child><object class="BdActionRow"><property name="caption">2</property><property name="slot">1</property></object></child>
+        <child><object class="BdActionRow"><property name="caption">3</property><property name="slot">2</property></object></child>
+        <child><object class="BdActionRow"><property name="caption">4</property><property name="slot">3</property></object></child>
+        <child><object class="BdActionRow"><property name="caption">5</property><property name="slot">4</property></object></child>
+        <child><object class="BdActionRow"><property name="caption">6</property><property name="slot">5</property></object></child>
+        <child><object class="BdActionRow"><property name="caption">7</property><property name="slot">6</property></object></child>
+        <child><object class="BdActionRow"><property name="caption">8</property><property name="slot">7</property></object></child>
+        <child><object class="BdActionRow"><property name="caption">▲</property><property name="slot">10</property></object></child>
+        <child><object class="BdActionRow"><property name="caption">▼</property><property name="slot">11</property></object></child>
+      </object>
+    </child>
+
+    <child>
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <property name="spacing">8</property>
+        <property name="valign">start</property>
+        <child><object class="GtkLabel"><property name="label">POLLING RATE</property><property name="xalign">0</property><style><class name="section"/></style></object></child>
+        <child><object class="GtkCheckButton" id="poll_125"><property name="label">125 HZ</property></object></child>
+        <child><object class="GtkCheckButton" id="poll_250"><property name="label">250 HZ</property><property name="group">poll_125</property></object></child>
+        <child><object class="GtkCheckButton" id="poll_500"><property name="label">500 HZ</property><property name="group">poll_125</property></object></child>
+        <child><object class="GtkCheckButton" id="poll_1000"><property name="label">1000 HZ</property><property name="group">poll_125</property></object></child>
+        <child>
+          <object class="GtkLabel">
+            <property name="label">Click an action to change it, then press APPLY.
+250/125 Hz are unverified.</property>
+            <property name="wrap">true</property>
+            <property name="xalign">0</property>
+            <property name="width-request">200</property>
+            <style><class name="hint"/></style>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

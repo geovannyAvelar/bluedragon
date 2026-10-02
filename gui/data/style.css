@@ -1,0 +1,33 @@
+window { background: #141414; color: #e8e8e8; }
+.title { color: #2f9bff; font-size: 30px; font-weight: 900; }
+.subtitle { color: #e8e8e8; font-weight: bold; letter-spacing: 2px; }
+.tabbar button { background: #1a1a1a; color: #fff; border: 2px solid #0a4fb0; border-radius: 0;
+  font-weight: bold; padding: 6px 0; }
+.tabbar button:checked { background: #0a74ff; border-color: #0a74ff; }
+.page { padding: 16px; }
+.section { font-weight: bold; color: #ffffff; }
+.hint { color: #9a9a9a; font-size: 11px; }
+.num { background: #1a1a1a; border: 1.5px solid #d8d8d8; border-radius: 50%;
+  min-width: 22px; min-height: 22px; font-size: 11px; font-weight: bold; }
+button.action { background: #06285f; color: #fff; border: 1px solid #0a3f8f; border-radius: 0;
+  font-weight: bold; box-shadow: none; }
+button.action:hover { background: #0a4aa0; }
+.dpihead { background: #0a74ff; font-weight: bold; padding: 3px 14px; }
+.modetab { background: #14305f; color: #fff; border-radius: 0; border: 1px solid #333; font-weight: bold; }
+.modetab:checked { background: #1a1a1a; border-bottom-color: #0a74ff; color: #fff; }
+.swatch { border-radius: 0; border: 1px solid #333; padding: 0; min-width: 32px; }
+.sw0 { background: #ff0000; } .sw1 { background: #00ff00; } .sw2 { background: #0000ff; }
+.sw3 { background: #00ffff; } .sw4 { background: #ffff00; } .sw5 { background: #aa00cc; }
+.sw6 { background: #ffffff; }
+.profiles button { background: #06285f; color: #fff; border-radius: 0; border: none; font-weight: bold;
+  min-width: 100px; box-shadow: none; }
+.profiles button:checked { background: #0a74ff; }
+.bar button { background: #3c3c3c; color: #fff; border-radius: 0; border: 1px solid #555; font-weight: bold;
+  min-width: 110px; box-shadow: none; }
+.bar button:hover { background: #505050; }
+.status { color: #7fb6ff; padding: 4px 16px; }
+scale trough { background: #0a4aa0; min-width: 8px; min-height: 8px; }
+scale slider { background: #222; border: 2px solid #0a74ff; border-radius: 0; min-width: 14px; min-height: 14px; margin: 0; padding: 0; }
+entry.error { border-color: #ff0000; }
+check:checked, radio:checked { background-image: none; background-color: #0a74ff; border-color: #0a74ff; color: #fff; }
+scale highlight { background: #0a74ff; border: none; margin: 0; padding: 0; min-width: 0; min-height: 0; }

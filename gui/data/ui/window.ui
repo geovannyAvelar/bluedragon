@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="BdWindow" parent="GtkApplicationWindow">
+    <property name="title">M711 Mouse Settings</property>
+    <property name="default-width">820</property>
+    <property name="default-height">660</property>
+    <child>
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <property name="spacing">8</property>
+
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">vertical</property>
+            <property name="margin-top">12</property>
+            <child><object class="GtkLabel"><property name="label">M711</property><style><class name="title"/></style></object></child>
+            <child><object class="GtkLabel"><property name="label">GAMING MOUSE</property><style><class name="subtitle"/></style></object></child>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkBox">
+            <property name="spacing">6</property>
+            <property name="homogeneous">true</property>
+            <property name="margin-start">16</property>
+            <property name="margin-end">16</property>
+            <style><class name="tabbar"/></style>
+            <child><object class="GtkToggleButton" id="tab_general"><property name="label">GENERAL</property><property name="action-name">bd.page</property><property name="action-target">'general'</property></object></child>
+            <child><object class="GtkToggleButton"><property name="label">DPI</property><property name="action-name">bd.page</property><property name="action-target">'dpi'</property></object></child>
+            <child><object class="GtkToggleButton"><property name="label">LIGHT</property><property name="action-name">bd.page</property><property name="action-target">'light'</property></object></child>
+            <child><object class="GtkToggleButton"><property name="label">INFO</property><property name="action-name">bd.page</property><property name="action-target">'info'</property></object></child>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkStack" id="stack">
+            <property name="vexpand">true</property>
+            <child><object class="GtkStackPage"><property name="name">general</property><property name="child"><object class="BdPageGeneral" id="page_general"/></property></object></child>
+            <child><object class="GtkStackPage"><property name="name">dpi</property><property name="child"><object class="BdPageDpi" id="page_dpi"/></property></object></child>
+            <child><object class="GtkStackPage"><property name="name">light</property><property name="child"><object class="BdPageLight" id="page_light"/></property></object></child>
+            <child><object class="GtkStackPage"><property name="name">info</property><property name="child"><object class="BdPageInfo" id="page_info"/></property></object></child>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkBox">
+            <property name="spacing">14</property>
+            <property name="halign">center</property>
+            <style><class name="profiles"/></style>
+            <child><object class="GtkToggleButton"><property name="label">PROFILE1</property><property name="action-name">bd.profile</property><property name="action-target">0</property></object></child>
+            <child><object class="GtkToggleButton"><property name="label">PROFILE2</property><property name="action-name">bd.profile</property><property name="action-target">1</property></object></child>
+            <child><object class="GtkToggleButton"><property name="label">PROFILE3</property><property name="action-name">bd.profile</property><property name="action-target">2</property></object></child>
+            <child><object class="GtkToggleButton"><property name="label">PROFILE4</property><property name="action-name">bd.profile</property><property name="action-target">3</property></object></child>
+            <child><object class="GtkToggleButton"><property name="label">PROFILE5</property><property name="action-name">bd.profile</property><property name="action-target">4</property></object></child>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkBox">
+            <property name="spacing">10</property>
+            <property name="halign">center</property>
+            <property name="margin-bottom">6</property>
+            <style><class name="bar"/></style>
+            <child>
+              <object class="GtkButton">
+                <property name="label">RESTORE</property>
+                <property name="tooltip-text">Reload settings from the mouse, discarding edits</property>
+                <signal name="clicked" handler="bd_window_on_restore" swapped="yes"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton">
+                <property name="label">SET ACTIVE</property>
+                <property name="tooltip-text">Make the selected profile the one the mouse uses</property>
+                <signal name="clicked" handler="bd_window_on_set_active" swapped="yes"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton">
+                <property name="label">APPLY</property>
+                <signal name="clicked" handler="bd_window_on_apply" swapped="yes"/>
+              </object>
+            </child>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkLabel" id="status">
+            <property name="xalign">0</property>
+            <style><class name="status"/></style>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Selections are property actions: light.mode / light.brightness / light.speed mirror the
+     BdPageLight properties of the same name, and a button shows as checked when the action
+     state equals its action-target. -->
+<interface>
+  <template class="BdPageLight" parent="GtkBox">
+    <property name="orientation">vertical</property>
+    <property name="spacing">14</property>
+    <style><class name="page"/></style>
+
+    <child>
+      <object class="GtkGrid">
+        <property name="column-homogeneous">true</property>
+        <child><object class="GtkToggleButton"><property name="label">MODE 0</property><property name="action-name">light.mode</property><property name="action-target">0</property><style><class name="modetab"/></style><layout><property name="column">0</property><property name="row">0</property></layout></object></child>
+        <child><object class="GtkToggleButton"><property name="label">MODE 1</property><property name="action-name">light.mode</property><property name="action-target">1</property><style><class name="modetab"/></style><layout><property name="column">1</property><property name="row">0</property></layout></object></child>
+        <child><object class="GtkToggleButton"><property name="label">BREATHING</property><property name="action-name">light.mode</property><property name="action-target">2</property><style><class name="modetab"/></style><layout><property name="column">2</property><property name="row">0</property></layout></object></child>
+        <child><object class="GtkToggleButton"><property name="label">MODE 3</property><property name="action-name">light.mode</property><property name="action-target">3</property><style><class name="modetab"/></style><layout><property name="column">3</property><property name="row">0</property></layout></object></child>
+        <child><object class="GtkToggleButton"><property name="label">MODE 4</property><property name="action-name">light.mode</property><property name="action-target">4</property><style><class name="modetab"/></style><layout><property name="column">0</property><property name="row">1</property></layout></object></child>
+        <child><object class="GtkToggleButton"><property name="label">MODE 5</property><property name="action-name">light.mode</property><property name="action-target">5</property><style><class name="modetab"/></style><layout><property name="column">1</property><property name="row">1</property></layout></object></child>
+        <child><object class="GtkToggleButton"><property name="label">MODE 6</property><property name="action-name">light.mode</property><property name="action-target">6</property><style><class name="modetab"/></style><layout><property name="column">2</property><property name="row">1</property></layout></object></child>
+        <child><object class="GtkToggleButton"><property name="label">OFF</property><property name="action-name">light.mode</property><property name="action-target">7</property><style><class name="modetab"/></style><layout><property name="column">3</property><property name="row">1</property></layout></object></child>
+      </object>
+    </child>
+
+    <child>
+      <object class="GtkBox">
+        <property name="spacing">40</property>
+
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">vertical</property>
+            <property name="spacing">10</property>
+            <child><object class="GtkLabel"><property name="label">LIGHT COLOR</property><property name="xalign">0</property><style><class name="section"/></style></object></child>
+            <child>
+              <object class="GtkBox">
+                <property name="spacing">6</property>
+                <!-- action-target is the hex colour; the handler is the light.swatch action -->
+                <child><object class="GtkButton"><property name="action-name">light.swatch</property><property name="action-target">'ff0000'</property><property name="width-request">32</property><property name="height-request">24</property><style><class name="swatch"/><class name="sw0"/></style></object></child>
+                <child><object class="GtkButton"><property name="action-name">light.swatch</property><property name="action-target">'00ff00'</property><property name="width-request">32</property><property name="height-request">24</property><style><class name="swatch"/><class name="sw1"/></style></object></child>
+                <child><object class="GtkButton"><property name="action-name">light.swatch</property><property name="action-target">'0000ff'</property><property name="width-request">32</property><property name="height-request">24</property><style><class name="swatch"/><class name="sw2"/></style></object></child>
+                <child><object class="GtkButton"><property name="action-name">light.swatch</property><property name="action-target">'00ffff'</property><property name="width-request">32</property><property name="height-request">24</property><style><class name="swatch"/><class name="sw3"/></style></object></child>
+                <child><object class="GtkButton"><property name="action-name">light.swatch</property><property name="action-target">'ffff00'</property><property name="width-request">32</property><property name="height-request">24</property><style><class name="swatch"/><class name="sw4"/></style></object></child>
+                <child><object class="GtkButton"><property name="action-name">light.swatch</property><property name="action-target">'aa00cc'</property><property name="width-request">32</property><property name="height-request">24</property><style><class name="swatch"/><class name="sw5"/></style></object></child>
+                <child><object class="GtkButton"><property name="action-name">light.swatch</property><property name="action-target">'ffffff'</property><property name="width-request">32</property><property name="height-request">24</property><style><class name="swatch"/><class name="sw6"/></style></object></child>
+              </object>
+            </child>
+            <child><object class="GtkLabel"><property name="label">Custom color</property><property name="xalign">0</property></object></child>
+            <child>
+              <object class="GtkColorDialogButton" id="color">
+                <property name="dialog"><object class="GtkColorDialog"/></property>
+              </object>
+            </child>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">vertical</property>
+            <property name="spacing">22</property>
+            <child>
+              <object class="GtkBox">
+                <property name="orientation">vertical</property>
+                <property name="spacing">6</property>
+                <child><object class="GtkLabel"><property name="label">BRIGHTNESS LEVEL</property><property name="xalign">0</property><style><class name="section"/></style></object></child>
+                <child><object class="GtkCheckButton" id="bright_low"><property name="label">LOW</property><property name="action-name">light.brightness</property><property name="action-target">1</property></object></child>
+                <child><object class="GtkCheckButton"><property name="label">MEDIUM</property><property name="action-name">light.brightness</property><property name="action-target">2</property></object></child>
+                <child><object class="GtkCheckButton"><property name="label">HIGH</property><property name="action-name">light.brightness</property><property name="action-target">3</property></object></child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkBox">
+                <property name="orientation">vertical</property>
+                <property name="spacing">6</property>
+                <child><object class="GtkLabel"><property name="label">SPEED</property><property name="xalign">0</property><style><class name="section"/></style></object></child>
+                <!-- the device stores speed inverted: 3 = low ... 1 = high -->
+                <child><object class="GtkCheckButton"><property name="label">LOW</property><property name="action-name">light.speed</property><property name="action-target">3</property></object></child>
+                <child><object class="GtkCheckButton"><property name="label">MEDIUM</property><property name="action-name">light.speed</property><property name="action-target">2</property></object></child>
+                <child><object class="GtkCheckButton"><property name="label">HIGH</property><property name="action-name">light.speed</property><property name="action-target">1</property></object></child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+
+    <child>
+      <object class="GtkLabel">
+        <property name="label">Only BREATHING and OFF are identified so far. Brightness and speed are known to apply to BREATHING; other modes may use these values differently.</property>
+        <property name="wrap">true</property>
+        <property name="xalign">0</property>
+        <style><class name="hint"/></style>
+      </object>
+    </child>
+  </template>
+</interface>
