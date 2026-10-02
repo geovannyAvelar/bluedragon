@@ -59,7 +59,7 @@ set(CPACK_DEBIAN_CLI_PACKAGE_CONTROL_EXTRA
 
 # --- bluedragon-gui: GTK4 front end ---
 set(CPACK_DEBIAN_GUI_PACKAGE_NAME bluedragon-gui)
-set(CPACK_DEBIAN_GUI_PACKAGE_DEPENDS "bluedragon (= ${_ver}), libbluedragon0 (= ${_ver}), libgtk-4-1 (>= 4.10), libc6")
+set(CPACK_DEBIAN_GUI_PACKAGE_DEPENDS "bluedragon (= ${_ver}), libbluedragon0 (= ${_ver}), libgtk-4-1 (>= 4.10), librsvg2-common, libc6")
 set(CPACK_DEBIAN_GUI_PACKAGE_SHLIBDEPS OFF)
 set(CPACK_DEBIAN_GUI_PACKAGE_SECTION gnome)
 set(CPACK_DEBIAN_GUI_DESCRIPTION "GTK4 settings window for the M711 gaming mouse

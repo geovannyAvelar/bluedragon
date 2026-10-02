@@ -5,7 +5,7 @@
     <property name="spacing">24</property>
     <style><class name="page"/></style>
 
-    <child><object class="BdMouseView"><property name="width-request">230</property><property name="height-request">380</property></object></child>
+    <child><object class="BdMouseView" id="mouse"><property name="width-request">230</property><property name="height-request">340</property></object></child>
 
     <child>
       <object class="GtkBox" id="rows">

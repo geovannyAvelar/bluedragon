@@ -13,5 +13,7 @@ G_DECLARE_FINAL_TYPE(BdPageGeneral, bd_page_general, BD, PAGE_GENERAL, GtkBox)
 
 /* Developer aid: opens the first action menu and returns its popover. */
 GtkWidget *bd_page_general_popup_first(BdPageGeneral *self);
+/* Developer aid: highlight the given BD_MARKER_* bits as if those buttons were held. */
+void bd_page_general_debug_press(BdPageGeneral *self, guint mask);
 
 G_END_DECLS

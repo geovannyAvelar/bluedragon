@@ -7,6 +7,7 @@
 #include "bd-snapshot.h"
 #include "bd-window.h"
 #include <gtk/gtk.h>
+#include <stdio.h>
 
 static void load_css(void) {
     GtkCssProvider *prov = gtk_css_provider_new();
@@ -21,6 +22,9 @@ static void activate(GtkApplication *app, gpointer data) {
     g_object_set(gtk_settings_get_default(), "gtk-application-prefer-dark-theme", TRUE, NULL);
     load_css();
     BdWindow *win = bd_window_new(app);
+    int w, h;                                  /* developer aid: M711_GUI_SIZE=WxH */
+    if (g_getenv("M711_GUI_SIZE") && sscanf(g_getenv("M711_GUI_SIZE"), "%dx%d", &w, &h) == 2)
+        gtk_window_set_default_size(GTK_WINDOW(win), w, h);
     gtk_window_present(GTK_WINDOW(win));
     const char *snap = g_getenv("M711_GUI_SNAPSHOT_DIR");
     if (snap) bd_snapshot_start(win, snap);

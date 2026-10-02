@@ -94,3 +94,10 @@ Use at your own risk; this is not affiliated with the mouse vendor.
 ## License
 
 LGPL-3.0-or-later, see `COPYING.LESSER` and `COPYING`.
+
+## Credits
+
+The mouse picture in the GUI is `Crispy-Computer-mouse-top-down-view.svg` from
+[Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Crispy-Computer-mouse-top-down-view.svg), released under
+CC0 1.0 (see `gui/data/images/ATTRIBUTION.md`). It needs the SVG loader of gdk-pixbuf (`librsvg2-common`) at runtime;
+without it the GUI falls back to a drawn mouse.

@@ -2,6 +2,7 @@
 <gresources>
   <gresource prefix="/org/bluedragon/settings">
     <file>style.css</file>
+    <file alias="images/mouse-top.svg">images/Crispy-Computer-mouse-top-down-view.svg</file>
     <file>ui/window.ui</file>
     <file>ui/page-general.ui</file>
     <file>ui/page-dpi.ui</file>

@@ -3,6 +3,8 @@
  */
 #include "bd-snapshot.h"
 
+#include "bd-mouse-view.h"
+
 typedef struct {
     BdWindow *win;
     GtkWidget *popover;
@@ -47,9 +49,20 @@ static gboolean step(gpointer data) {
         gtk_popover_popdown(GTK_POPOVER(s->popover));
         gtk_widget_activate_action(GTK_WIDGET(s->win), "bd.profile", "i", 1);   /* PROFILE2 button */
     } else if (s->step == 7) {
-        char *path = g_strdup_printf("%s/profile2.png", s->dir);
-        save_widget(GTK_WIDGET(s->win), path);
-        g_free(path);
+        char *pp = g_strdup_printf("%s/profile2.png", s->dir);
+        save_widget(GTK_WIDGET(s->win), pp);
+        g_free(pp);
+        bd_window_debug_press(s->win, BD_MARKER(1) | BD_MARKER(4) | BD_MARKER(7) | BD_MARKER_UP);
+    } else if (s->step == 9) {
+        char *pp = g_strdup_printf("%s/pressed-a.png", s->dir);
+        save_widget(GTK_WIDGET(s->win), pp);
+        g_free(pp);
+        bd_window_debug_press(s->win, BD_MARKER(2) | BD_MARKER(3) | BD_MARKER(5) | BD_MARKER(6) | BD_MARKER(8) | BD_MARKER_DOWN);
+    } else if (s->step == 11) {
+        char *pp = g_strdup_printf("%s/pressed-b.png", s->dir);
+        save_widget(GTK_WIDGET(s->win), pp);
+        g_free(pp);
+    } else if (s->step == 12) {
         g_application_quit(g_application_get_default());
         g_free(s->dir);
         g_free(s);

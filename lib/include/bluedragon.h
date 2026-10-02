@@ -94,6 +94,19 @@ M711_API void m711_action_name(const uint8_t e[4], char *buf, size_t n);
 M711_API int m711_get_button(m711 *d, int profile, int btn, uint8_t out[4]);
 M711_API int m711_set_button(m711 *d, int profile, int btn, const uint8_t e[4]);
 
+/* ---- live input ---------------------------------------------------------- */
+
+/* Read-only view of the mouse's own HID reports (what the OS also sees; reading does not steal events).
+ * m711_open_input returns a non-blocking fd for the hidraw node of USB interface 0 (the pointer), or
+ * -1. Each read() yields one 8-byte report, decoded by m711_parse_mouse_report. */
+typedef struct {
+    uint16_t buttons;        /* bit n set = button n+1 down: 0 left, 1 right, 2 middle, 3 back, 4 forward */
+    int wheel;               /* scroll delta of this report: >0 up, <0 down */
+} m711_mouse_state;
+
+M711_API int m711_open_input(void);
+M711_API int m711_parse_mouse_report(const uint8_t *buf, size_t len, m711_mouse_state *st);
+
 /* ---- LED --------------------------------------------------------------- */
 
 /* One 7-byte record per profile at 0x449 + 8*profile:

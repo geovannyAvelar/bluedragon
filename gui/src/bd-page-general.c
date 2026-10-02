@@ -8,7 +8,9 @@
 #include "bd-mouse-view.h"
 #include "bd-page.h"
 #include <errno.h>
+#include <glib-unix.h>
 #include <string.h>
+#include <unistd.h>
 
 #define N_POLL 4
 static const int poll_hz[N_POLL] = {125, 250, 500, 1000};
@@ -17,6 +19,13 @@ struct _BdPageGeneral {
     GtkBox parent;
     GtkBox *rows;
     GtkCheckButton *poll[N_POLL];
+    BdMouseView *mouse;
+    int input_fd;            /* the mouse's own HID reports, for the pressed-button highlight */
+    guint input_watch;
+    guint wheel_flash;       /* timeout that clears the scroll arrows */
+    guint buttons_down;      /* BD_MARKER_* bits of held buttons */
+    guint wheel_mask;        /* BD_MARKER_UP / BD_MARKER_DOWN while flashing */
+    gboolean debug_hold;     /* snapshot mode: ignore real input */
 };
 
 static void bd_page_iface_init(BdPageInterface *iface);
@@ -34,8 +43,70 @@ static BdActionRow *row_at(BdPageGeneral *self, int i) {
     for (GtkWidget *r_ = gtk_widget_get_first_child(GTK_WIDGET((self)->rows)); r_; r_ = gtk_widget_get_next_sibling(r_)) \
         for (BdActionRow *r = BD_ACTION_ROW(r_), *once_ = r; once_; once_ = NULL)
 
+/* ---- live button highlight ---- */
+
+static void show_pressed(BdPageGeneral *self) {
+    bd_mouse_view_set_pressed(self->mouse, self->buttons_down | self->wheel_mask);
+}
+
+static gboolean wheel_flash_done(gpointer data) {
+    BdPageGeneral *self = data;
+    self->wheel_mask = 0;
+    self->wheel_flash = 0;
+    show_pressed(self);
+    return G_SOURCE_REMOVE;
+}
+
+/* HID button bit -> marker number, for the factory button layout: bit 0 left (1), 1 right (2),
+ * 2 middle (3), 4 forward (4), 3 back (5). Buttons remapped to keyboard keys are not seen here. */
+static guint markers_for_buttons(uint16_t bits) {
+    static const struct { int bit, marker; } map[] = {{0, 1}, {1, 2}, {2, 3}, {4, 4}, {3, 5}};
+    guint m = 0;
+    for (guint i = 0; i < G_N_ELEMENTS(map); i++)
+        if (bits & (1u << map[i].bit)) m |= BD_MARKER(map[i].marker);
+    return m;
+}
+
+static gboolean on_input(gint fd, GIOCondition cond, gpointer data) {
+    BdPageGeneral *self = data;
+    uint8_t buf[64];
+    ssize_t n;
+    if (self->debug_hold) {                                  /* drain and ignore */
+        while (read(fd, buf, sizeof buf) > 0) {}
+        return G_SOURCE_CONTINUE;
+    }
+    if (cond & (G_IO_ERR | G_IO_HUP)) {                      /* unplugged: retry on the next load */
+        close(fd);
+        self->input_fd = -1;
+        self->input_watch = 0;
+        self->buttons_down = self->wheel_mask = 0;
+        show_pressed(self);
+        return G_SOURCE_REMOVE;
+    }
+    while ((n = read(fd, buf, sizeof buf)) > 0) {
+        m711_mouse_state st;
+        if (m711_parse_mouse_report(buf, (size_t)n, &st)) continue;
+        self->buttons_down = markers_for_buttons(st.buttons);
+        if (st.wheel) {
+            self->wheel_mask = st.wheel > 0 ? BD_MARKER_UP : BD_MARKER_DOWN;
+            if (self->wheel_flash) g_source_remove(self->wheel_flash);
+            self->wheel_flash = g_timeout_add(180, wheel_flash_done, self);
+        }
+    }
+    show_pressed(self);
+    return G_SOURCE_CONTINUE;
+}
+
+static void ensure_input(BdPageGeneral *self) {
+    if (self->input_fd >= 0) return;
+    self->input_fd = m711_open_input();
+    if (self->input_fd >= 0)
+        self->input_watch = g_unix_fd_add(self->input_fd, G_IO_IN | G_IO_ERR | G_IO_HUP, on_input, self);
+}
+
 static void load(BdPage *page, m711 *dev, int profile) {
     BdPageGeneral *self = BD_PAGE_GENERAL(page);
+    ensure_input(self);
     FOR_EACH_ROW(self, row) {
         uint8_t e[4];
         char name[64] = "?";
@@ -95,16 +166,38 @@ GtkWidget *bd_page_general_popup_first(BdPageGeneral *self) {
     return GTK_WIDGET(gtk_menu_button_get_popover(b));
 }
 
+void bd_page_general_debug_press(BdPageGeneral *self, guint mask) {
+    self->debug_hold = TRUE;
+    self->buttons_down = mask;
+    show_pressed(self);
+}
+
+static void dispose(GObject *o) {
+    BdPageGeneral *self = BD_PAGE_GENERAL(o);
+    if (self->input_watch) g_source_remove(self->input_watch);
+    if (self->wheel_flash) g_source_remove(self->wheel_flash);
+    if (self->input_fd >= 0) close(self->input_fd);
+    self->input_watch = self->wheel_flash = 0;
+    self->input_fd = -1;
+    G_OBJECT_CLASS(bd_page_general_parent_class)->dispose(o);
+}
+
 static void bd_page_general_class_init(BdPageGeneralClass *klass) {
+    GObjectClass *oc = G_OBJECT_CLASS(klass);
     GtkWidgetClass *wc = GTK_WIDGET_CLASS(klass);
+    oc->dispose = dispose;
     g_type_ensure(BD_TYPE_MOUSE_VIEW);
     g_type_ensure(BD_TYPE_ACTION_ROW);
     gtk_widget_class_set_template_from_resource(wc, BD_RESOURCE_PREFIX "/ui/page-general.ui");
     gtk_widget_class_bind_template_child(wc, BdPageGeneral, rows);
+    gtk_widget_class_bind_template_child(wc, BdPageGeneral, mouse);
     gtk_widget_class_bind_template_child_full(wc, "poll_125", FALSE, G_STRUCT_OFFSET(BdPageGeneral, poll[0]));
     gtk_widget_class_bind_template_child_full(wc, "poll_250", FALSE, G_STRUCT_OFFSET(BdPageGeneral, poll[1]));
     gtk_widget_class_bind_template_child_full(wc, "poll_500", FALSE, G_STRUCT_OFFSET(BdPageGeneral, poll[2]));
     gtk_widget_class_bind_template_child_full(wc, "poll_1000", FALSE, G_STRUCT_OFFSET(BdPageGeneral, poll[3]));
 }
 
-static void bd_page_general_init(BdPageGeneral *self) { gtk_widget_init_template(GTK_WIDGET(self)); }
+static void bd_page_general_init(BdPageGeneral *self) {
+    self->input_fd = -1;
+    gtk_widget_init_template(GTK_WIDGET(self));
+}

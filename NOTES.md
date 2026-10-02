@@ -52,6 +52,9 @@ APT repo: .github/workflows/apt-repo.yml (reusable, called by release.yml) runs 
   releases), unstable (the 'unstable' release). Signing key in repo secrets APT_GPG_PRIVATE_KEY / APT_GPG_PASSPHRASE;
   key fingerprint 76D9B403F116C55E7B410F34A911599BE993D01C; owner-only backup at ~/bluedragon-apt-signing-key-backup.txt.
   Rotate: generate a new key, update both secrets, users re-download pubkey.gpg.
+GUI live highlight: BdPageGeneral reads the pointer interface (hidraw iface 0, 8-byte reports: 16 button bits, X, Y, wheel, pan)
+  via m711_open_input/m711_parse_mouse_report and tints pressed buttons yellow in BdMouseView. Only the factory button layout
+  is detected (remapped keys arrive on the keyboard interface; DPI/LED-mode buttons are handled in firmware).
 Options: BUILD_SHARED_LIBS, M711_SANITIZE, M711_BUILD_CLI, M711_BUILD_TESTS.
 Use from C: #include <bluedragon.h>, link bluedragon::bluedragon (or -lbluedragon).  Exported symbols are only the m711_* API
 (the m711_ prefix names the mouse model).

@@ -457,3 +457,17 @@ int m711_get_dpi_stage(m711 *d, int p) {
     if (p < 0 || p >= M711_PROFILES) { errno = EINVAL; return -1; }
     return m711_read(d, base[p] + 2, &v, 1) ? -1 : v;
 }
+
+int m711_open_input(void) {
+    char path[300];
+    if (find_iface(0, path, sizeof path)) { errno = ENODEV; return -1; }
+    return open(path, O_RDONLY | O_NONBLOCK);
+}
+
+/* Report layout from the interface-0 descriptor: 16 button bits, X and Y (16 bit each), wheel, pan. */
+int m711_parse_mouse_report(const uint8_t *buf, size_t len, m711_mouse_state *st) {
+    if (len < 8) { errno = EINVAL; return -1; }
+    st->buttons = buf[0] | (buf[1] << 8);
+    st->wheel = (int8_t)buf[6];
+    return 0;
+}

@@ -20,5 +20,6 @@ void bd_window_reload(BdWindow *self);
 /* Developer aids used by the snapshot mode. */
 void bd_window_show_page(BdWindow *self, const char *name);
 GtkWidget *bd_window_popup_first_action(BdWindow *self);
+void bd_window_debug_press(BdWindow *self, guint mask);
 
 G_END_DECLS

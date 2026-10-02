@@ -176,3 +176,7 @@ void bd_window_show_page(BdWindow *self, const char *name) { g_object_set(self, 
 GtkWidget *bd_window_popup_first_action(BdWindow *self) {
     return bd_page_general_popup_first(BD_PAGE_GENERAL(self->page_general));
 }
+
+void bd_window_debug_press(BdWindow *self, guint mask) {
+    bd_page_general_debug_press(BD_PAGE_GENERAL(self->page_general), mask);
+}

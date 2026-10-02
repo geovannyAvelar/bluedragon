@@ -452,6 +452,19 @@ static void test_led_get_set(void) {
     m711_close(m);
 }
 
+static void test_mouse_report(void) {
+    m711_mouse_state st;
+    uint8_t r[8] = {0x15, 0x00, 0xff, 0xff, 0x01, 0x00, 0x01, 0x00};      /* left+middle+forward, scroll up */
+    CHECK(m711_parse_mouse_report(r, 8, &st) == 0);
+    CHECK(st.buttons == 0x15 && st.wheel == 1);
+    r[0] = 0x02; r[1] = 0x01; r[6] = 0xff;                                  /* right + button 9, scroll down */
+    CHECK(m711_parse_mouse_report(r, 8, &st) == 0);
+    CHECK(st.buttons == 0x0102 && st.wheel == -1);
+    memset(r, 0, sizeof r);
+    CHECK(m711_parse_mouse_report(r, 8, &st) == 0 && st.buttons == 0 && st.wheel == 0);
+    CHECK_ERR(m711_parse_mouse_report(r, 7, &st), EINVAL);
+}
+
 static void test_open_close(void) {
     m711_close(NULL);                                    /* must not crash */
     struct dev d; dev_init(&d);
@@ -479,6 +492,7 @@ int main(void) {
     RUN(test_session_closed_on_error);
     RUN(test_led_modes);
     RUN(test_led_get_set);
+    RUN(test_mouse_report);
     RUN(test_open_close);
     printf("\n%d checks, %d failures\n", checks, failures);
     return failures ? 1 : 0;
