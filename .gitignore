@@ -1,0 +1,9 @@
+# build trees
+/build*/
+/cmake-build-*/
+CMakeUserPresets.json
+
+# editor / OS
+*~
+*.swp
+.DS_Store
