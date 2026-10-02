@@ -259,12 +259,14 @@ static GtkWidget *build_popover(RowCtx *c) {
         GtkWidget *b = gtk_button_new_with_label(friendly[i].label);
         gtk_widget_add_css_class(b, "flat");
         gtk_button_set_has_frame(GTK_BUTTON(b), FALSE);
+        gtk_widget_set_halign(gtk_button_get_child(GTK_BUTTON(b)), GTK_ALIGN_START);
         g_object_set_data(G_OBJECT(b), "spec", (gpointer)friendly[i].spec);
         g_signal_connect(b, "clicked", G_CALLBACK(on_pick), c);
         gtk_box_append(GTK_BOX(box), b);
     }
     GtkWidget *e = gtk_entry_new();
     gtk_entry_set_placeholder_text(GTK_ENTRY(e), "key:ctrl+c   key:f5   raw:8d000000");
+    gtk_widget_set_margin_top(e, 6);
     GtkWidget *set = gtk_button_new_with_label("Use custom action");
     g_object_set_data(G_OBJECT(set), "entry", e);
     g_signal_connect(set, "clicked", G_CALLBACK(on_custom), c);
@@ -273,6 +275,9 @@ static GtkWidget *build_popover(RowCtx *c) {
     gtk_box_append(GTK_BOX(box), set);
     GtkWidget *sw = gtk_scrolled_window_new();
     gtk_scrolled_window_set_propagate_natural_height(GTK_SCROLLED_WINDOW(sw), TRUE);
+    gtk_scrolled_window_set_propagate_natural_width(GTK_SCROLLED_WINDOW(sw), TRUE);
+    gtk_widget_set_size_request(sw, 260, -1);
+    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(sw), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
     gtk_scrolled_window_set_max_content_height(GTK_SCROLLED_WINDOW(sw), 360);
     gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(sw), box);
     GtkWidget *pop = gtk_popover_new();
@@ -323,12 +328,12 @@ static void draw_mouse(GtkDrawingArea *area, cairo_t *cr, int w, int h, gpointer
     cairo_curve_to(cr, cx + 40, 55, cx - 40, 55, cx - 62, 70);
     cairo_fill_preserve(cr);
     cairo_pattern_destroy(g);
-    cairo_set_source_rgb(cr, 0.7, 0.1, 0.1);
+    cairo_set_source_rgb(cr, 0.1, 0.4, 0.85);
     cairo_set_line_width(cr, 2);
     cairo_stroke(cr);
-    cairo_set_source_rgba(cr, 0.7, 0.1, 0.1, 0.8);                    /* button split + wheel */
+    cairo_set_source_rgba(cr, 0.1, 0.4, 0.85, 0.8);                    /* button split + wheel */
     cairo_move_to(cr, cx, 62); cairo_line_to(cr, cx, 150); cairo_stroke(cr);
-    cairo_set_source_rgb(cr, 0.75, 0.1, 0.1);
+    cairo_set_source_rgb(cr, 0.1, 0.45, 0.95);
     cairo_rectangle(cr, cx - 9, 78, 18, 50); cairo_fill(cr);
     cairo_select_font_face(cr, "Sans", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);
     marker(cr, cx - 35, 95, "1");
@@ -623,36 +628,38 @@ static GtkWidget *build_info(App *a) {
 
 static const char *css =
     "window { background: #141414; color: #e8e8e8; }"
-    ".title { color: #ff1a1a; font-size: 30px; font-weight: 900; }"
+    ".title { color: #2f9bff; font-size: 30px; font-weight: 900; }"
     ".subtitle { color: #e8e8e8; font-weight: bold; letter-spacing: 2px; }"
-    ".tabbar button { background: #1a1a1a; color: #fff; border: 2px solid #b00000; border-radius: 0;"
+    ".tabbar button { background: #1a1a1a; color: #fff; border: 2px solid #0a4fb0; border-radius: 0;"
     "  font-weight: bold; padding: 6px 0; }"
-    ".tabbar button:checked { background: #ff0000; border-color: #ff0000; }"
+    ".tabbar button:checked { background: #0a74ff; border-color: #0a74ff; }"
     ".page { padding: 16px; }"
     ".section { font-weight: bold; color: #ffffff; }"
     ".hint { color: #9a9a9a; font-size: 11px; }"
     ".num { background: #1a1a1a; border: 1.5px solid #d8d8d8; border-radius: 50%;"
     "  min-width: 22px; min-height: 22px; font-size: 11px; font-weight: bold; }"
-    "button.action { background: #5a0000; color: #fff; border: 1px solid #7a0000; border-radius: 0;"
+    "button.action { background: #06285f; color: #fff; border: 1px solid #0a3f8f; border-radius: 0;"
     "  font-weight: bold; box-shadow: none; }"
-    "button.action:hover { background: #8a0000; }"
-    ".dpihead { background: #ff0000; font-weight: bold; padding: 3px 14px; }"
-    ".modetab { background: #5a1414; color: #fff; border-radius: 0; border: 1px solid #333; font-weight: bold; }"
-    ".modetab:checked { background: #1a1a1a; border-bottom-color: #ff0000; color: #fff; }"
+    "button.action:hover { background: #0a4aa0; }"
+    ".dpihead { background: #0a74ff; font-weight: bold; padding: 3px 14px; }"
+    ".modetab { background: #14305f; color: #fff; border-radius: 0; border: 1px solid #333; font-weight: bold; }"
+    ".modetab:checked { background: #1a1a1a; border-bottom-color: #0a74ff; color: #fff; }"
     ".swatch { border-radius: 0; border: 1px solid #333; padding: 0; min-width: 32px; }"
     ".sw0 { background: #ff0000; } .sw1 { background: #00ff00; } .sw2 { background: #0000ff; }"
     ".sw3 { background: #00ffff; } .sw4 { background: #ffff00; } .sw5 { background: #aa00cc; }"
     ".sw6 { background: #ffffff; }"
-    ".profiles button { background: #5a0000; color: #fff; border-radius: 0; border: none; font-weight: bold;"
+    ".profiles button { background: #06285f; color: #fff; border-radius: 0; border: none; font-weight: bold;"
     "  min-width: 100px; box-shadow: none; }"
-    ".profiles button:checked { background: #ff0000; }"
+    ".profiles button:checked { background: #0a74ff; }"
     ".bar button { background: #3c3c3c; color: #fff; border-radius: 0; border: 1px solid #555; font-weight: bold;"
     "  min-width: 110px; box-shadow: none; }"
     ".bar button:hover { background: #505050; }"
-    ".status { color: #ff6060; padding: 4px 16px; }"
-    "scale trough { background: #8a0000; min-width: 8px; min-height: 8px; }"
-    "scale slider { background: #222; border: 2px solid #ff0000; border-radius: 0; min-width: 14px; min-height: 14px; margin: 0; padding: 0; }"
-    "entry.error { border-color: #ff0000; }";
+    ".status { color: #7fb6ff; padding: 4px 16px; }"
+    "scale trough { background: #0a4aa0; min-width: 8px; min-height: 8px; }"
+    "scale slider { background: #222; border: 2px solid #0a74ff; border-radius: 0; min-width: 14px; min-height: 14px; margin: 0; padding: 0; }"
+    "entry.error { border-color: #ff0000; }"
+    "check:checked, radio:checked { background-image: none; background-color: #0a74ff; border-color: #0a74ff; color: #fff; }"
+    "scale highlight { background: #0a74ff; border: none; margin: 0; padding: 0; min-width: 0; min-height: 0; }";
 
 static GtkWidget *hbox_centered(GtkWidget **kids, int n, const char *cls, int spacing) {
     GtkWidget *h = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, spacing);
@@ -662,29 +669,43 @@ static GtkWidget *hbox_centered(GtkWidget **kids, int n, const char *cls, int sp
     return h;
 }
 
-/* Developer aid: M711_GUI_SNAPSHOT_DIR=/dir renders every tab to /dir/<page>.png and exits. */
+/* Developer aid: M711_GUI_SNAPSHOT_DIR=/dir renders every tab, plus the first action popover,
+ * to /dir/<name>.png and exits. */
+static void save_widget(GtkWidget *wd, const char *path) {
+    GdkPaintable *p = gtk_widget_paintable_new(wd);
+    int w = gtk_widget_get_width(wd), h = gtk_widget_get_height(wd);
+    GtkSnapshot *snap = gtk_snapshot_new();
+    gdk_paintable_snapshot(p, snap, w, h);
+    GskRenderNode *node = gtk_snapshot_free_to_node(snap);
+    GskRenderer *r = gtk_native_get_renderer(gtk_widget_get_native(wd));
+    GdkTexture *tex = gsk_renderer_render_texture(r, node, &GRAPHENE_RECT_INIT(0, 0, w, h));
+    gdk_texture_save_to_png(tex, path);
+    g_object_unref(tex);
+    gsk_render_node_unref(node);
+    g_object_unref(p);
+}
+
 static gboolean snap_step(gpointer data) {
     App *a = data;
     static int step = 0;
     static const char *pages[4] = {"general", "dpi", "light", "info"};
     const char *dir = g_getenv("M711_GUI_SNAPSHOT_DIR");
+    char *f = NULL;
     if (step < 4) {
-        GdkPaintable *p = gtk_widget_paintable_new(a->win);
-        int w = gtk_widget_get_width(a->win), h = gtk_widget_get_height(a->win);
-        GtkSnapshot *snap = gtk_snapshot_new();
-        gdk_paintable_snapshot(p, snap, w, h);
-        GskRenderNode *node = gtk_snapshot_free_to_node(snap);
-        GskRenderer *r = gtk_native_get_renderer(GTK_NATIVE(a->win));
-        GdkTexture *tex = gsk_renderer_render_texture(r, node, &GRAPHENE_RECT_INIT(0, 0, w, h));
-        char *f = g_strdup_printf("%s/%s.png", dir, pages[step]);
-        gdk_texture_save_to_png(tex, f);
-        g_free(f);
-        g_object_unref(tex);
-        gsk_render_node_unref(node);
-        g_object_unref(p);
+        f = g_strdup_printf("%s/%s.png", dir, pages[step]);
+        save_widget(a->win, f);
+    } else if (step == 5) {
+        f = g_strdup_printf("%s/popover.png", dir);
+        save_widget(gtk_widget_get_ancestor(GTK_WIDGET(gtk_popover_get_child(
+            gtk_menu_button_get_popover(a->row_btn[0]))), GTK_TYPE_POPOVER), f);
     }
-    if (++step >= 4) { g_application_quit(g_application_get_default()); return G_SOURCE_REMOVE; }
-    gtk_toggle_button_set_active(a->tab[step], TRUE);
+    g_free(f);
+    if (step < 3) gtk_toggle_button_set_active(a->tab[step + 1], TRUE);
+    else if (step == 3) {
+        gtk_toggle_button_set_active(a->tab[0], TRUE);
+        gtk_menu_button_popup(a->row_btn[0]);
+    } else if (step >= 5) { g_application_quit(g_application_get_default()); return G_SOURCE_REMOVE; }
+    step++;
     return G_SOURCE_CONTINUE;
 }
 
