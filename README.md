@@ -10,6 +10,37 @@ Reverse engineered from the vendor's Windows configuration tool; no vendor code 
 | bluedragon-gui | `gui/` | GTK4 front end: composite templates (`data/ui/*.ui`) in a GResource, one class per widget (built when GTK 4.10+ development files are found) |
 | tests | `tests/` | Unit tests against a simulated device, no hardware needed |
 
+## Dependencies
+
+Tested on Ubuntu 24.04. Package names are Debian/Ubuntu ones.
+
+**Using it (runtime)**
+
+| What | Needs |
+|---|---|
+| `bluedragon` command line tool, `libbluedragon` | nothing beyond libc |
+| `bluedragon-gui` | `libgtk-4-1` (GTK 4.10 or newer) and `librsvg2-common` (the SVG loader that draws the mouse picture; without it a drawn mouse is used instead) |
+| Access to the mouse | read/write permission on its hidraw node; the udev rule in the `bluedragon` package (or the one under "Usage") grants it |
+
+```bash
+sudo apt install libgtk-4-1 librsvg2-common
+```
+
+**Building from source**
+
+| What | Package | Notes |
+|---|---|---|
+| C compiler | `gcc` | C11 |
+| Build tool | `cmake` (3.21+ for the presets), `ninja-build` | the presets always use the Ninja generator |
+| GTK 4 headers | `libgtk-4-dev` (4.10+), `libglib2.0-dev-bin` | `libglib2.0-dev-bin` provides `glib-compile-resources`; both are pulled in by `libgtk-4-dev`, and `pkg-config` finds GTK. Without GTK 4.10+ the GUI is skipped and the rest still builds (Ubuntu 22.04 has GTK 4.6, so no GUI there) |
+| Debian packages | `dpkg-dev` | only for `--target package`; `lintian` is optional for checking them |
+
+```bash
+sudo apt install build-essential cmake ninja-build pkg-config libgtk-4-dev librsvg2-common
+# only to build the .deb packages:
+sudo apt install dpkg-dev lintian fakeroot
+```
+
 ## Build
 
 ```bash
@@ -18,8 +49,7 @@ cmake --build --preset default
 ctest --preset default
 ```
 
-Builds use Ninja (`sudo apt install ninja-build`). Presets: `default`, `debug`, `asan` (ASan + UBSan).
-GUI needs `libgtk-4-dev`.
+Presets: `default`, `debug`, `asan` (ASan + UBSan), `deb` (installs under `/usr`, for the packages).
 
 ## Debian packages
 
