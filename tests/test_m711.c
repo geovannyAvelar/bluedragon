@@ -1,3 +1,6 @@
+/* SPDX-License-Identifier: LGPL-3.0-or-later
+ * Copyright (C) 2026 Giovani Avelar
+ */
 /* Unit tests for libm711 against a simulated device (no hardware needed). */
 #include <m711.h>
 #include <errno.h>

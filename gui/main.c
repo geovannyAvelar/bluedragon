@@ -1,3 +1,6 @@
+/* SPDX-License-Identifier: LGPL-3.0-or-later
+ * Copyright (C) 2026 Giovani Avelar
+ */
 /* m711-gui: GTK4 front end for libm711. Operations run synchronously (each takes < 0.5 s). */
 #include <errno.h>
 #include <gtk/gtk.h>

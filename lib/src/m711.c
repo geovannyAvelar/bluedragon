@@ -1,3 +1,6 @@
+/* SPDX-License-Identifier: LGPL-3.0-or-later
+ * Copyright (C) 2026 Giovani Avelar
+ */
 #include "m711.h"
 #include <dirent.h>
 #include <errno.h>
