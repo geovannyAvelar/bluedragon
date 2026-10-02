@@ -242,6 +242,16 @@ static void test_dpi_verify_failure(void) {
     m711_close(m);
 }
 
+static void test_dpi_stage(void) {
+    struct dev d; dev_init(&d);
+    d.mem[0x1b0 + 2] = 2;
+    m711 *m = attach(&d);
+    CHECK(m711_get_dpi_stage(m, 0) == 0);
+    CHECK(m711_get_dpi_stage(m, 2) == 2);
+    CHECK_ERR(m711_get_dpi_stage(m, 5), EINVAL);
+    m711_close(m);
+}
+
 static void test_polling(void) {
     struct dev d; dev_init(&d);
     m711 *m = attach(&d);
@@ -276,6 +286,10 @@ static void test_action_parse(void) {
         {"left", {0x81, 0, 0, 0}},   {"RIGHT", {0x82, 0, 0, 0}},  {"middle", {0x83, 0, 0, 0}},
         {"button4", {0x84, 0, 0, 0}}, {"back", {0x84, 0, 0, 0}},
         {"button5", {0x85, 0, 0, 0}}, {"forward", {0x85, 0, 0, 0}}, {"none", {0, 0, 0, 0}},
+        {"dpi+", {0x8a, 0, 0, 0}}, {"dpi-", {0x89, 0, 0, 0}}, {"ledmode", {0x9b, 4, 0, 0}},
+        {"scrollup", {0x8b, 0, 0, 0}}, {"scrolldown", {0x8c, 0, 0, 0}},
+        {"dpi+", {0x8a, 0, 0, 0}}, {"dpi-", {0x89, 0, 0, 0}}, {"ledmode", {0x9b, 4, 0, 0}},
+        {"scrollup", {0x8b, 0, 0, 0}}, {"scrolldown", {0x8c, 0, 0, 0}},
         {"stop", {0x8e, 1, 0xb7, 0}}, {"playpause", {0x8e, 1, 0xcd, 0}}, {"prev", {0x8e, 1, 0xb6, 0}},
         {"next", {0x8e, 1, 0xb5, 0}}, {"volup", {0x8e, 1, 0xe9, 0}}, {"voldown", {0x8e, 1, 0xea, 0}},
         {"mute", {0x8e, 1, 0xe2, 0}},
@@ -307,9 +321,10 @@ static void test_action_parse(void) {
 
 static void test_action_name(void) {
     static const char *roundtrip[] = {"left", "right", "middle", "button4", "button5", "none", "stop",
+        "dpi+", "dpi-", "ledmode", "scrollup", "scrolldown",
         "playpause", "prev", "next", "volup", "voldown", "mute", "key:a", "key:f5", "key:enter",
         "key:ctrl", "key:shift", "key:alt", "key:win", "key:ctrl+shift+a", "key:ctrl+alt+delete",
-        "key:win+e", "raw:8a000000", "raw:9b040000"};
+        "key:win+e", "raw:8d000000", "raw:88000000"};
     for (size_t i = 0; i < sizeof roundtrip / sizeof *roundtrip; i++) {
         uint8_t e[4]; char n[64];
         CHECK(m711_action_parse(roundtrip[i], e) == 0);
@@ -456,6 +471,7 @@ int main(void) {
     RUN(test_dpi_set);
     RUN(test_dpi_set_invalid);
     RUN(test_dpi_verify_failure);
+    RUN(test_dpi_stage);
     RUN(test_polling);
     RUN(test_action_parse);
     RUN(test_action_name);

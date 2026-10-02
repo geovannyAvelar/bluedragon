@@ -278,6 +278,9 @@ static const struct { const char *name; uint8_t e[4]; } fixed[] = {
     {"button4", {0x84, 0, 0, 0}},  {"back", {0x84, 0, 0, 0}},
     {"button5", {0x85, 0, 0, 0}},  {"forward", {0x85, 0, 0, 0}},
     {"none", {0, 0, 0, 0}},
+    /* device functions, named from the vendor UI's default button layout */
+    {"dpi+", {0x8a, 0, 0, 0}},     {"dpi-", {0x89, 0, 0, 0}},    {"ledmode", {0x9b, 4, 0, 0}},
+    {"scrollup", {0x8b, 0, 0, 0}}, {"scrolldown", {0x8c, 0, 0, 0}},
     {"stop", {0x8e, 1, 0xb7, 0}},  {"playpause", {0x8e, 1, 0xcd, 0}},
     {"prev", {0x8e, 1, 0xb6, 0}},  {"next", {0x8e, 1, 0xb5, 0}},
     {"volup", {0x8e, 1, 0xe9, 0}}, {"voldown", {0x8e, 1, 0xea, 0}},
@@ -447,4 +450,10 @@ int m711_set_led(m711 *d, int p, const m711_led *l) {
     if (m711_read(d, a, chk, 7)) return -1;
     if (memcmp(chk, b, 7)) { errno = EIO; return -1; }
     return 0;
+}
+
+int m711_get_dpi_stage(m711 *d, int p) {
+    uint8_t v;
+    if (p < 0 || p >= M711_PROFILES) { errno = EINVAL; return -1; }
+    return m711_read(d, base[p] + 2, &v, 1) ? -1 : v;
 }

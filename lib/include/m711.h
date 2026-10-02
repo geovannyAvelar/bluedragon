@@ -60,6 +60,8 @@ M711_API int m711_set_profile(m711 *d, int profile);
 M711_API int m711_set_dpi(m711 *d, int profile, int level, int dpi);
 M711_API int m711_get_dpi(m711 *d, int profile, int level);
 M711_API extern const uint8_t m711_dpi_code[51];
+/* Current DPI stage of a profile (0-based), stored at profile_base + 2. -1 on error. */
+M711_API int m711_get_dpi_stage(m711 *d, int profile);
 
 /* ---- polling rate ------------------------------------------------------ */
 
@@ -82,6 +84,7 @@ M711_API int m711_measure_rate(double seconds, double *median_us, int *samples);
  *
  * Action spec strings:
  *   left right middle button4 button5 back forward none
+ *   dpi+ dpi- ledmode scrollup scrolldown   (names inferred from the vendor UI layout)
  *   stop playpause prev next volup voldown mute
  *   key:<combo>   e.g. key:f5  key:enter  key:ctrl+shift+a  (modifier-only ok: key:ctrl)
  *   raw:AABBCCDD  4 raw bytes, hex
