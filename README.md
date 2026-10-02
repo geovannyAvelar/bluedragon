@@ -36,6 +36,23 @@ sudo apt install ./build-deb/packages/*.deb
 | `bluedragon` | command line tool, man page, udev rule (mouse access for the logged-in user) |
 | `bluedragon-gui` | GTK4 settings window, desktop entry, icon, man page |
 
+### APT repository (Ubuntu 24.04 and newer)
+
+Every release and every build of `main` is also published to a signed APT repository on GitHub Pages
+(amd64 and arm64):
+
+```bash
+sudo curl -fsSLo /usr/share/keyrings/bluedragon.gpg https://geovannyavelar.github.io/bluedragon/pubkey.gpg
+echo "deb [signed-by=/usr/share/keyrings/bluedragon.gpg] https://geovannyavelar.github.io/bluedragon stable main" \
+  | sudo tee /etc/apt/sources.list.d/bluedragon.list
+sudo apt update
+sudo apt install bluedragon-gui      # or just: bluedragon
+```
+
+`stable` holds every tagged release. `unstable` holds only the latest build of `main` (no history, may be
+broken); use it instead of `stable`, not together with it. The signing key fingerprint is
+`76D9 B403 F116 C55E 7B41 0F34 A911 599B E993 D01C`.
+
 ### Releases
 
 GitHub Actions (`.github/workflows/release.yml`) builds and tests the packages for amd64 and arm64:
@@ -44,7 +61,9 @@ GitHub Actions (`.github/workflows/release.yml`) builds and tests the packages f
   `<project version>~unstable.<date>.<sha>`;
 - pushing a tag such as `v0.0.1` publishes a regular release with that version
   (`git tag v0.0.1 && git push origin v0.0.1`); a tag with a suffix such as `v1.0.0-rc1` is marked pre-release;
-- pull requests are built and tested only.
+- pull requests are built and tested only;
+- after each release the APT repository is rebuilt from the Releases page and redeployed to GitHub Pages
+  (`.github/workflows/apt-repo.yml`, `packaging/apt/build-repo.sh`).
 
 ## Usage
 

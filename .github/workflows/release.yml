@@ -1,7 +1,7 @@
 name: Build and release
 
-# main push   -> replace the "unstable" pre-release with a fresh build
-# v* tag push -> new versioned release
+# main push   -> replace the "unstable" pre-release with a fresh build, then republish the APT repo
+# v* tag push -> new versioned release, then republish the APT repo
 # pull request -> build and test only
 on:
   push:
@@ -41,7 +41,9 @@ jobs:
             # v0.0.1 -> 0.0.1 ; v1.2.0-rc1 -> 1.2.0~rc1 (sorts before 1.2.0)
             version=$(echo "${GITHUB_REF_NAME#v}" | tr '-' '~')
           else
-            version="${base}~unstable.$(date -u +%Y%m%d).$(git rev-parse --short=7 HEAD)"
+            # "+" sorts above the plain version (main is always past the last tag); the timestamp makes
+            # every build newer than the previous one, so `apt upgrade` picks it up
+            version="${base}+unstable.$(date -u +%Y%m%d%H%M%S).$(git rev-parse --short=7 HEAD)"
           fi
           echo "base=$base version=$version"
           echo "version=$version" >> "$GITHUB_OUTPUT"
@@ -137,3 +139,15 @@ jobs:
             --title "$GITHUB_REF_NAME" \
             --generate-notes \
             *.deb SHA256SUMS
+
+  apt-repo:
+    name: Publish APT repository
+    needs: [unstable, release]
+    # exactly one of unstable/release runs per push; the other one is skipped
+    if: ${{ !cancelled() && github.event_name == 'push' && (needs.unstable.result == 'success' || needs.release.result == 'success') }}
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    uses: ./.github/workflows/apt-repo.yml
+    secrets: inherit

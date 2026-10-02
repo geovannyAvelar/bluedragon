@@ -47,6 +47,11 @@ Always Ninja: generator is set in CMakePresets.json (presets: default, debug, as
 Packages: cmake --preset deb && cmake --build --preset deb --target package  -> build-deb/packages/*.deb
   (cmake/Packaging.cmake, packaging/{deb,man,udev}; components lib/dev/cli/gui; lintian-clean except ldconfig/modalias warnings)
 CI: .github/workflows/release.yml (main -> replaces 'unstable' pre-release; v* tag -> release; amd64 + arm64). BD_PACKAGE_VERSION sets the deb version.
+APT repo: .github/workflows/apt-repo.yml (reusable, called by release.yml) runs packaging/apt/build-repo.sh (apt-ftparchive + gpg),
+  stateless, deployed to GitHub Pages (https://geovannyavelar.github.io/bluedragon). Distributions: stable (all non-prerelease
+  releases), unstable (the 'unstable' release). Signing key in repo secrets APT_GPG_PRIVATE_KEY / APT_GPG_PASSPHRASE;
+  key fingerprint 76D9B403F116C55E7B410F34A911599BE993D01C; owner-only backup at ~/bluedragon-apt-signing-key-backup.txt.
+  Rotate: generate a new key, update both secrets, users re-download pubkey.gpg.
 Options: BUILD_SHARED_LIBS, M711_SANITIZE, M711_BUILD_CLI, M711_BUILD_TESTS.
 Use from C: #include <bluedragon.h>, link bluedragon::bluedragon (or -lbluedragon).  Exported symbols are only the m711_* API
 (the m711_ prefix names the mouse model).
