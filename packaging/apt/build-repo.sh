@@ -72,9 +72,10 @@ cat > "$out/index.html" <<HTML
 <code>bluedragon</code> (command line) and <code>bluedragon-gui</code>. Built for Ubuntu 24.04 and newer
 (amd64, arm64).</p>
 <pre>sudo curl -fsSLo /usr/share/keyrings/bluedragon.gpg $REPO_URL/pubkey.gpg
-echo "deb [signed-by=/usr/share/keyrings/bluedragon.gpg] $REPO_URL stable main" | sudo tee /etc/apt/sources.list.d/bluedragon.list
+echo "deb [arch=amd64,arm64 signed-by=/usr/share/keyrings/bluedragon.gpg] $REPO_URL stable main" | sudo tee /etc/apt/sources.list.d/bluedragon.list
 sudo apt update
 sudo apt install bluedragon-gui</pre>
-<p>Use <code>unstable</code> instead of <code>stable</code> for the latest build of <code>main</code>.</p>
+<p><code>stable</code> only has packages once a <code>v*</code> release has been tagged. Use <code>unstable</code> instead
+of <code>stable</code> for the latest build of <code>main</code> (do not enable both).</p>
 <p>Source: <a href="https://github.com/geovannyAvelar/bluedragon">github.com/geovannyAvelar/bluedragon</a></p>
 HTML

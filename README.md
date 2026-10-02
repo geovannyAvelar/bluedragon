@@ -39,17 +39,18 @@ sudo apt install ./build-deb/packages/*.deb
 ### APT repository (Ubuntu 24.04 and newer)
 
 Every release and every build of `main` is also published to a signed APT repository on GitHub Pages
-(amd64 and arm64):
+(amd64 and arm64). The `arch=` option avoids apt's "doesn't support architecture 'i386'" notice on multiarch systems:
 
 ```bash
 sudo curl -fsSLo /usr/share/keyrings/bluedragon.gpg https://geovannyavelar.github.io/bluedragon/pubkey.gpg
-echo "deb [signed-by=/usr/share/keyrings/bluedragon.gpg] https://geovannyavelar.github.io/bluedragon stable main" \
+echo "deb [arch=amd64,arm64 signed-by=/usr/share/keyrings/bluedragon.gpg] https://geovannyavelar.github.io/bluedragon stable main" \
   | sudo tee /etc/apt/sources.list.d/bluedragon.list
 sudo apt update
 sudo apt install bluedragon-gui      # or just: bluedragon
 ```
 
-`stable` holds every tagged release. `unstable` holds only the latest build of `main` (no history, may be
+`stable` holds every tagged release, so it stays empty (`Unable to locate package`) until the first `v*` tag is
+pushed; until then use `unstable`. `unstable` holds only the latest build of `main` (no history, may be
 broken); use it instead of `stable`, not together with it. The signing key fingerprint is
 `76D9 B403 F116 C55E 7B41 0F34 A911 599B E993 D01C`.
 
