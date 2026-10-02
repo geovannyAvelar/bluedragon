@@ -33,4 +33,7 @@ target_include_directories(bluedragon-gui PRIVATE src ${GTK4_INCLUDE_DIRS})
 target_link_directories(bluedragon-gui PRIVATE ${GTK4_LIBRARY_DIRS})
 target_compile_options(bluedragon-gui PRIVATE ${GTK4_CFLAGS_OTHER})
 target_link_libraries(bluedragon-gui PRIVATE bluedragon::bluedragon ${GTK4_LIBRARIES} m)
-install(TARGETS bluedragon-gui RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(TARGETS bluedragon-gui RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT gui)
+install(FILES data/org.bluedragon.settings.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications COMPONENT gui)
+install(FILES data/icons/org.bluedragon.settings.svg
+        DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps COMPONENT gui)

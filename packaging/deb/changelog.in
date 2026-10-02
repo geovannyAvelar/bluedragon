@@ -1,0 +1,6 @@
+bluedragon (@BD_PACKAGE_VERSION@-1) unstable; urgency=medium
+
+  * Initial release: libbluedragon, bluedragon command line tool and
+    bluedragon-gui settings window for the M711 gaming mouse.
+
+ -- Giovani Avelar <geovanny.avelar@gmail.com>  @BD_CHANGELOG_DATE@

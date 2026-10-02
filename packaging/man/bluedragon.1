@@ -1,0 +1,49 @@
+.TH BLUEDRAGON 1 "October 2026" "bluedragon 0.1.0" "User Commands"
+.SH NAME
+bluedragon \- configure the M711 gaming mouse
+.SH SYNOPSIS
+.B bluedragon
+[\fB\-d\fR \fIDEVICE\fR] \fICOMMAND\fR [\fIARGS\fR...]
+.SH DESCRIPTION
+Reads and changes the settings stored in the M711 mouse (USB 04d9:fc30) over its
+hidraw configuration interface. Profiles are numbered 1 to 5.
+.SH COMMANDS
+.TP
+.B dump
+Show the active profile, polling rates, and for each profile the LED, DPI levels and buttons.
+.TP
+\fBread\fR \fIADDR\fR \fILEN\fR
+Hex dump device memory.
+.TP
+\fBwrite\fR \fIADDR\fR \fIBYTE\fR...
+Raw write of hex bytes, without applying.
+.TP
+\fBcommit\fR \fIFLAG\fR
+Send an apply command (1 profile, 2 DPI, 4 buttons, 8 polling).
+.TP
+\fBprofile\fR \fIN\fR
+Select the active profile.
+.TP
+\fBdpi\fR \fIPROFILE\fR \fILEVEL\fR \fIDPI\fR
+Set a DPI level (1\-5) to a multiple of 100 between 100 and 5000.
+.TP
+\fBpolling\fR \fIPROFILE\fR \fIHZ\fR
+Set the polling rate: 125, 250, 500 or 1000.
+.TP
+\fBbutton\fR \fIPROFILE\fR \fIBUTTON\fR \fIACTION\fR
+Assign an action to a button slot (0\-11), for example \fBleft\fR, \fBdpi+\fR, \fBvolup\fR,
+\fBkey:ctrl+c\fR or \fBraw:8d000000\fR.
+.TP
+\fBled\fR \fIPROFILE\fR \fBcolor\fR \fIRRGGBB\fR | \fBmode\fR \fIN\fR | \fBvalue\fR \fIN\fR | \fBlevel\fR \fIN\fR
+Change the LED settings of a profile.
+.TP
+\fBmeasure\fR [\fISECONDS\fR]
+Measure the real report rate; keep moving the mouse.
+.SH FILES
+.TP
+.I /usr/lib/udev/rules.d/70-bluedragon.rules
+Gives the logged-in user access to the mouse.
+.SH AUTHOR
+Giovani Avelar.
+.SH SEE ALSO
+.BR bluedragon\-gui (1)

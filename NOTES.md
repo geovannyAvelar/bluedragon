@@ -44,6 +44,9 @@ Not yet decoded: names of device functions, macros, fire key, LED effect names, 
   cmake --preset asan && cmake --build --preset asan && ctest --preset asan   # ASan + UBSan
 Always Ninja: generator is set in CMakePresets.json (presets: default, debug, asan).
   cmake --install build --prefix /usr/local        # lib, header, bluedragon, CMake package (find_package(bluedragon))
+Packages: cmake --preset deb && cmake --build --preset deb --target package  -> build-deb/packages/*.deb
+  (cmake/Packaging.cmake, packaging/{deb,man,udev}; components lib/dev/cli/gui; lintian-clean except ldconfig/modalias warnings)
+CI: .github/workflows/release.yml (main -> replaces 'unstable' pre-release; v* tag -> release; amd64 + arm64). BD_PACKAGE_VERSION sets the deb version.
 Options: BUILD_SHARED_LIBS, M711_SANITIZE, M711_BUILD_CLI, M711_BUILD_TESTS.
 Use from C: #include <bluedragon.h>, link bluedragon::bluedragon (or -lbluedragon).  Exported symbols are only the m711_* API
 (the m711_ prefix names the mouse model).

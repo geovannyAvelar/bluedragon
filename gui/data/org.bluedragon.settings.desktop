@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Bluedragon Mouse Settings
+GenericName=Mouse configuration
+Comment=Configure DPI, buttons, lighting and polling rate of the M711 mouse
+Exec=bluedragon-gui
+Icon=org.bluedragon.settings
+Terminal=false
+Categories=Settings;HardwareSettings;GTK;
+Keywords=mouse;dpi;led;
+StartupWMClass=org.bluedragon.settings

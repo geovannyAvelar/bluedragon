@@ -1,37 +1,96 @@
 {
   "version": 3,
-  "cmakeMinimumRequired": { "major": 3, "minor": 21, "patch": 0 },
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 21,
+    "patch": 0
+  },
   "configurePresets": [
     {
       "name": "default",
       "displayName": "Ninja, Release",
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build",
-      "cacheVariables": { "CMAKE_BUILD_TYPE": "Release" }
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
     },
     {
       "name": "debug",
       "displayName": "Ninja, Debug",
       "inherits": "default",
       "binaryDir": "${sourceDir}/build-debug",
-      "cacheVariables": { "CMAKE_BUILD_TYPE": "Debug" }
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
     },
     {
       "name": "asan",
       "displayName": "Ninja, Debug + ASan/UBSan",
       "inherits": "default",
       "binaryDir": "${sourceDir}/build-asan",
-      "cacheVariables": { "CMAKE_BUILD_TYPE": "Debug", "M711_SANITIZE": "ON" }
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "M711_SANITIZE": "ON"
+      }
+    },
+    {
+      "name": "deb",
+      "displayName": "Ninja, Release, /usr prefix (for .deb packages)",
+      "inherits": "default",
+      "binaryDir": "${sourceDir}/build-deb",
+      "cacheVariables": {
+        "CMAKE_INSTALL_PREFIX": "/usr",
+        "M711_BUILD_TESTS": "ON"
+      }
     }
   ],
   "buildPresets": [
-    { "name": "default", "configurePreset": "default" },
-    { "name": "debug", "configurePreset": "debug" },
-    { "name": "asan", "configurePreset": "asan" }
+    {
+      "name": "default",
+      "configurePreset": "default"
+    },
+    {
+      "name": "debug",
+      "configurePreset": "debug"
+    },
+    {
+      "name": "asan",
+      "configurePreset": "asan"
+    },
+    {
+      "name": "deb",
+      "configurePreset": "deb"
+    }
   ],
   "testPresets": [
-    { "name": "default", "configurePreset": "default", "output": { "outputOnFailure": true } },
-    { "name": "debug", "configurePreset": "debug", "output": { "outputOnFailure": true } },
-    { "name": "asan", "configurePreset": "asan", "output": { "outputOnFailure": true } }
+    {
+      "name": "default",
+      "configurePreset": "default",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "debug",
+      "configurePreset": "debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "asan",
+      "configurePreset": "asan",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "deb",
+      "configurePreset": "deb",
+      "output": {
+        "outputOnFailure": true
+      }
+    }
   ]
 }

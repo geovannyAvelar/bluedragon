@@ -1,0 +1,2 @@
+# M711 gaming mouse: give the logged-in user access to its hidraw nodes (config interface)
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="04d9", ATTRS{idProduct}=="fc30", TAG+="uaccess"

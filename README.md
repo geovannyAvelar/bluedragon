@@ -21,6 +21,31 @@ ctest --preset default
 Builds use Ninja (`sudo apt install ninja-build`). Presets: `default`, `debug`, `asan` (ASan + UBSan).
 GUI needs `libgtk-4-dev`.
 
+## Debian packages
+
+```bash
+cmake --preset deb && cmake --build --preset deb --target package
+ls build-deb/packages/
+sudo apt install ./build-deb/packages/*.deb
+```
+
+| Package | Contents |
+|---|---|
+| `libbluedragon0` | shared library |
+| `libbluedragon-dev` | header, `libbluedragon.so` symlink, CMake package |
+| `bluedragon` | command line tool, man page, udev rule (mouse access for the logged-in user) |
+| `bluedragon-gui` | GTK4 settings window, desktop entry, icon, man page |
+
+### Releases
+
+GitHub Actions (`.github/workflows/release.yml`) builds and tests the packages for amd64 and arm64:
+
+- every push to `main` replaces the **unstable** pre-release (tag `unstable`) with a fresh build, versioned
+  `<project version>~unstable.<date>.<sha>`;
+- pushing a tag such as `v0.0.1` publishes a regular release with that version
+  (`git tag v0.0.1 && git push origin v0.0.1`); a tag with a suffix such as `v1.0.0-rc1` is marked pre-release;
+- pull requests are built and tested only.
+
 ## Usage
 
 ```bash

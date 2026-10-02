@@ -1,0 +1,139 @@
+name: Build and release
+
+# main push   -> replace the "unstable" pre-release with a fresh build
+# v* tag push -> new versioned release
+# pull request -> build and test only
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build .deb (${{ matrix.arch }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { arch: amd64, runner: ubuntu-24.04 }
+          - { arch: arm64, runner: ubuntu-24.04-arm }
+    runs-on: ${{ matrix.runner }}
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            cmake ninja-build gcc libgtk-4-dev pkg-config dpkg-dev lintian
+
+      - name: Work out the package version
+        id: version
+        run: |
+          base=$(sed -n 's/^project(bluedragon VERSION \([0-9.]*\).*/\1/p' CMakeLists.txt)
+          if [ "$GITHUB_REF_TYPE" = tag ]; then
+            # v0.0.1 -> 0.0.1 ; v1.2.0-rc1 -> 1.2.0~rc1 (sorts before 1.2.0)
+            version=$(echo "${GITHUB_REF_NAME#v}" | tr '-' '~')
+          else
+            version="${base}~unstable.$(date -u +%Y%m%d).$(git rev-parse --short=7 HEAD)"
+          fi
+          echo "base=$base version=$version"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Configure
+        run: cmake --preset deb -DBD_PACKAGE_VERSION='${{ steps.version.outputs.version }}'
+
+      - name: Build
+        run: cmake --build --preset deb
+
+      - name: Check the GUI was built
+        run: test -x build-deb/gui/bluedragon-gui
+
+      - name: Test
+        run: ctest --preset deb
+
+      - name: Package
+        run: cmake --build --preset deb --target package
+
+      - name: Lint packages
+        continue-on-error: true
+        run: lintian --tag-display-limit 0 build-deb/packages/*.deb
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: deb-${{ matrix.arch }}
+          path: build-deb/packages/*.deb
+          if-no-files-found: error
+
+  unstable:
+    name: Publish unstable release
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    # one publish at a time, so delete + create never interleave
+    concurrency:
+      group: release-unstable
+      cancel-in-progress: false
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: deb-*
+          merge-multiple: true
+          path: dist
+
+      - name: Replace the unstable release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          cd dist
+          sha256sum *.deb > SHA256SUMS
+          short=${GITHUB_SHA::7}
+          # remove the previous unstable release together with its tag
+          gh release delete unstable --cleanup-tag --yes || true
+          gh release create unstable \
+            --prerelease \
+            --target "$GITHUB_SHA" \
+            --title "Unstable (main @ $short)" \
+            --notes "Automatic build of \`main\` at commit $GITHUB_SHA ($(date -u +%Y-%m-%d)).
+          Replaced on every push to main; may be broken. Packages: \`${{ needs.build.outputs.version }}\`.
+
+          Install: \`sudo apt install ./bluedragon*.deb ./libbluedragon0*.deb\`" \
+            *.deb SHA256SUMS
+
+  release:
+    name: Publish release
+    needs: build
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: deb-*
+          merge-multiple: true
+          path: dist
+
+      - name: Create the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          cd dist
+          sha256sum *.deb > SHA256SUMS
+          # a tag with a "-" suffix (v1.0.0-rc1) is published as a pre-release
+          case "$GITHUB_REF_NAME" in *-*) pre=--prerelease ;; *) pre= ;; esac
+          gh release create "$GITHUB_REF_NAME" $pre \
+            --verify-tag \
+            --title "$GITHUB_REF_NAME" \
+            --generate-notes \
+            *.deb SHA256SUMS

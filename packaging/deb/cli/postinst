@@ -1,0 +1,8 @@
+#!/bin/sh
+set -e
+# apply the new udev rule to a mouse that is already plugged in
+if [ "$1" = "configure" ] && command -v udevadm >/dev/null 2>&1; then
+    udevadm control --reload-rules 2>/dev/null || true
+    udevadm trigger --subsystem-match=hidraw --attr-match=idVendor=04d9 --attr-match=idProduct=fc30 2>/dev/null || true
+fi
+exit 0
