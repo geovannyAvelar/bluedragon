@@ -34,9 +34,10 @@ Not yet decoded: names of device functions, macros, fire key, LED effect names, 
   tests/test_m711.c                    unit tests against a simulated device
 
 ## Build
-  cmake -S . -B build && cmake --build build
-  ctest --test-dir build --output-on-failure
-  cmake -S . -B build-asan -DM711_SANITIZE=ON      # ASan + UBSan
+  cmake --preset default && cmake --build --preset default     # Ninja, Release, build/
+  ctest --preset default
+  cmake --preset asan && cmake --build --preset asan && ctest --preset asan   # ASan + UBSan
+Always Ninja: generator is set in CMakePresets.json (presets: default, debug, asan).
   cmake --install build --prefix /usr/local        # lib, header, m711ctl, CMake package (find_package(m711))
 Options: BUILD_SHARED_LIBS, M711_SANITIZE, M711_BUILD_CLI, M711_BUILD_TESTS.
 Use from C: #include <m711.h>, link m711::m711 (or -lm711).  Exported symbols are only the m711_* API.

@@ -13,11 +13,13 @@ Reverse engineered from the vendor's Windows configuration tool; no vendor code 
 ## Build
 
 ```bash
-cmake -S . -B build && cmake --build build
-ctest --test-dir build --output-on-failure
+cmake --preset default            # Ninja generator, Release, in build/
+cmake --build --preset default
+ctest --preset default
 ```
 
-GUI needs `libgtk-4-dev`. `-DM711_SANITIZE=ON` builds with ASan and UBSan.
+Builds use Ninja (`sudo apt install ninja-build`). Presets: `default`, `debug`, `asan` (ASan + UBSan).
+GUI needs `libgtk-4-dev`.
 
 ## Usage
 
