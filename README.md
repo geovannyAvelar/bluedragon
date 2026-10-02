@@ -1,4 +1,4 @@
-# bluedragon
+# Bluedragon
 
 Linux driver, command line tool and GTK4 settings window for the M711 gaming mouse (USB `04d9:fc30`).
 Reverse engineered from the vendor's Windows configuration tool; no vendor code is included.
