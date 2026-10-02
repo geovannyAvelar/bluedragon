@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: LGPL-3.0-or-later
  * Copyright (C) 2026 Giovani Avelar
  */
-#include "m711.h"
+#include <bluedragon.h>
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -46,7 +46,7 @@ static int dump(m711 *d) {
 }
 
 static void usage(void) {
-    fputs("usage: m711ctl [-d /dev/hidrawN] <cmd>\n"
+    fputs("usage: bluedragon [-d /dev/hidrawN] <cmd>\n"
           "  dump                       show profiles, DPI levels, buttons\n"
           "  read  <addr> <len>         hex dump device memory\n"
           "  write <addr> <hex bytes..> raw write (no commit)\n"

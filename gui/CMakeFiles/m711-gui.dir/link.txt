@@ -1,1 +1,0 @@
-/usr/bin/cc -Wl,--dependency-file=CMakeFiles/m711-gui.dir/link.d "CMakeFiles/m711-gui.dir/main.c.o" -o m711-gui  -Wl,-rpath,/home/giovani/bluedragon/lib: ../lib/libm711.so.0.1.0 -lgtk-4 -lpangocairo-1.0 -lpango-1.0 -lharfbuzz -lgdk_pixbuf-2.0 -lcairo-gobject -lcairo -lvulkan -lgraphene-1.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0 -lm

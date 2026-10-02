@@ -6,7 +6,7 @@
  * (each takes < 0.5 s); the report-rate measurement runs in a worker thread. */
 #include <errno.h>
 #include <gtk/gtk.h>
-#include <m711.h>
+#include <bluedragon.h>
 #include <math.h>
 #include <string.h>
 
@@ -776,7 +776,7 @@ static void activate(GtkApplication *app, gpointer data) {
 
 int main(int argc, char **argv) {
     App a = {0};
-    GtkApplication *app = gtk_application_new("org.m711.settings", G_APPLICATION_DEFAULT_FLAGS);
+    GtkApplication *app = gtk_application_new("org.bluedragon.settings", G_APPLICATION_DEFAULT_FLAGS);
     g_signal_connect(app, "activate", G_CALLBACK(activate), &a);
     int rc = g_application_run(G_APPLICATION(app), argc, argv);
     g_object_unref(app);

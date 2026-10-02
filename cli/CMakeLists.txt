@@ -1,3 +1,4 @@
-add_executable(m711ctl main.c)
-target_link_libraries(m711ctl PRIVATE m711::m711)
-install(TARGETS m711ctl RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+add_executable(bluedragon-cli main.c)
+set_target_properties(bluedragon-cli PROPERTIES OUTPUT_NAME bluedragon)
+target_link_libraries(bluedragon-cli PRIVATE bluedragon::bluedragon)
+install(TARGETS bluedragon-cli RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})

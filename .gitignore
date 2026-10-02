@@ -7,3 +7,15 @@ CMakeUserPresets.json
 *~
 *.swp
 .DS_Store
+
+# in-source CMake artifacts (always build out of tree: cmake --preset default)
+/CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+CTestTestfile.cmake
+/Makefile
+/*/Makefile
+install_manifest.txt
+compile_commands.json
+/lib/*Config.cmake
+/lib/*ConfigVersion.cmake

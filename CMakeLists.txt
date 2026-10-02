@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(m711 VERSION 0.1.0 LANGUAGES C)
+project(bluedragon VERSION 0.1.0 LANGUAGES C)
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
@@ -8,7 +8,7 @@ set(CMAKE_C_VISIBILITY_PRESET hidden)
 
 option(BUILD_SHARED_LIBS "Build libm711 as a shared library" ON)
 option(M711_SANITIZE "Build with AddressSanitizer + UndefinedBehaviorSanitizer" OFF)
-option(M711_BUILD_CLI "Build the m711ctl command line tool" ON)
+option(M711_BUILD_CLI "Build the bluedragon command line tool" ON)
 option(M711_BUILD_GUI "Build the GTK4 GUI (needs libgtk-4-dev)" ON)
 option(M711_BUILD_TESTS "Build the unit tests" ON)
 

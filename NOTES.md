@@ -28,19 +28,20 @@ LED: 7-byte record per profile at 0x449+8*p: [R G B type value sub level].  Writ
 Not yet decoded: names of device functions, macros, fire key, LED effect names, report 4/5/6.
 
 ## Layout
-  lib/include/m711.h, lib/src/m711.c   libm711 (shared by default, -DBUILD_SHARED_LIBS=OFF for static)
-  cli/main.c                           m711ctl, links m711::m711
-  gui/main.c                           m711-gui, GTK4 front end (built only if libgtk-4-dev >= 4.10 is found)
-  tests/test_m711.c                    unit tests against a simulated device
+  lib/include/bluedragon.h, lib/src/bluedragon.c   libbluedragon (shared by default, -DBUILD_SHARED_LIBS=OFF for static)
+  cli/main.c                           bluedragon (CLI), links bluedragon::bluedragon
+  gui/main.c                           bluedragon-gui, GTK4 front end (built only if libgtk-4-dev >= 4.10 is found)
+  tests/test_bluedragon.c                    unit tests against a simulated device
 
 ## Build
   cmake --preset default && cmake --build --preset default     # Ninja, Release, build/
   ctest --preset default
   cmake --preset asan && cmake --build --preset asan && ctest --preset asan   # ASan + UBSan
 Always Ninja: generator is set in CMakePresets.json (presets: default, debug, asan).
-  cmake --install build --prefix /usr/local        # lib, header, m711ctl, CMake package (find_package(m711))
+  cmake --install build --prefix /usr/local        # lib, header, bluedragon, CMake package (find_package(bluedragon))
 Options: BUILD_SHARED_LIBS, M711_SANITIZE, M711_BUILD_CLI, M711_BUILD_TESTS.
-Use from C: #include <m711.h>, link m711::m711 (or -lm711).  Exported symbols are only the m711_* API.
+Use from C: #include <bluedragon.h>, link bluedragon::bluedragon (or -lbluedragon).  Exported symbols are only the m711_* API
+(the m711_ prefix names the mouse model).
 
 ## Tests
   Run against a simulated device (m711_open_custom with fake feature-report callbacks); no hardware needed.

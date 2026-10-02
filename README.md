@@ -1,13 +1,13 @@
-# m711
+# bluedragon
 
 Linux driver, command line tool and GTK4 settings window for the M711 gaming mouse (USB `04d9:fc30`).
 Reverse engineered from the vendor's Windows configuration tool; no vendor code is included.
 
 | Module | Path | Description |
 |---|---|---|
-| libm711 | `lib/` | C library: DPI, polling rate, buttons, LED, raw memory access over hidraw |
-| m711ctl | `cli/` | Command line tool built on libm711 |
-| m711-gui | `gui/` | GTK4 front end (built when GTK 4.10+ development files are found) |
+| libbluedragon | `lib/` | C library: DPI, polling rate, buttons, LED, raw memory access over hidraw |
+| bluedragon | `cli/` | Command line tool built on libbluedragon |
+| bluedragon-gui | `gui/` | GTK4 front end (built when GTK 4.10+ development files are found) |
 | tests | `tests/` | Unit tests against a simulated device, no hardware needed |
 
 ## Build
@@ -24,12 +24,12 @@ GUI needs `libgtk-4-dev`.
 ## Usage
 
 ```bash
-./build/cli/m711ctl dump
-./build/cli/m711ctl dpi 1 1 1600
-./build/cli/m711ctl polling 1 500
-./build/cli/m711ctl button 1 3 key:ctrl+c
-./build/cli/m711ctl led 1 color 00ff00
-./build/gui/m711-gui
+./build/cli/bluedragon dump
+./build/cli/bluedragon dpi 1 1 1600
+./build/cli/bluedragon polling 1 500
+./build/cli/bluedragon button 1 3 key:ctrl+c
+./build/cli/bluedragon led 1 color 00ff00
+./build/gui/bluedragon-gui
 ```
 
 The config interface is a hidraw node (USB interface 2). Your user needs read/write access to it,

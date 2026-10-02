@@ -1,1 +1,0 @@
-/usr/bin/cc -Wl,--dependency-file=CMakeFiles/m711ctl.dir/link.d CMakeFiles/m711ctl.dir/main.c.o -o m711ctl  -Wl,-rpath,/home/giovani/bluedragon/lib: ../lib/libm711.so.0.1.0

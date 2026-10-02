@@ -1,1 +1,0 @@
-/usr/bin/cc -fPIC -shared -Wl,--dependency-file=CMakeFiles/m711.dir/link.d -Wl,-soname,libm711.so.0 -o libm711.so.0.1.0 CMakeFiles/m711.dir/src/m711.c.o

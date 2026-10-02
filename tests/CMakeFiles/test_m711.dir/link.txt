@@ -1,1 +1,0 @@
-/usr/bin/cc -Wl,--dependency-file=CMakeFiles/test_m711.dir/link.d CMakeFiles/test_m711.dir/test_m711.c.o -o test_m711  -Wl,-rpath,/home/giovani/bluedragon/lib ../lib/libm711.so.0.1.0

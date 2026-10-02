@@ -2,7 +2,7 @@
  * Copyright (C) 2026 Giovani Avelar
  */
 /* Unit tests for libm711 against a simulated device (no hardware needed). */
-#include <m711.h>
+#include <bluedragon.h>
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>

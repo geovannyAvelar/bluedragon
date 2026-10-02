@@ -1,8 +1,8 @@
 /* SPDX-License-Identifier: LGPL-3.0-or-later
  * Copyright (C) 2026 Giovani Avelar
  */
-#ifndef M711_H
-#define M711_H
+#ifndef BLUEDRAGON_H
+#define BLUEDRAGON_H
 
 #include <stddef.h>
 #include <stdint.h>
